@@ -2,10 +2,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initNavigation();
+    initModal(); // Initialize modal first
     initGallery();
     initContactForm();
     initScrollEffects();
-    initModal();
 });
 
 // Navigation functionality
@@ -139,8 +139,19 @@ function initGallery() {
         `;
         
         // Add click event for modal
-        galleryItem.addEventListener('click', function() {
-            openModal(image.src, image.title);
+        galleryItem.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Gallery item clicked, index:', index); // Debug log
+            openModal(index);
+        });
+        
+        // Also add click event to the image itself
+        const img = galleryItem.querySelector('img');
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Image clicked directly, index:', index); // Debug log
+            openModal(index);
         });
         
         galleryGrid.appendChild(galleryItem);
@@ -148,13 +159,91 @@ function initGallery() {
 }
 
 // Modal functionality
+let currentImageIndex = 0;
+let galleryImages = [];
+
 function initModal() {
-    // Create modal HTML
+    // Store gallery images for modal navigation
+    galleryImages = [
+        {
+            src: 'assets/images/38530ac6-9a8a-44a1-9c65-d1fd4198c7c8.JPG',
+            title: 'Indian American Fusion',
+            description: 'Perfect blend of traditional and contemporary styles'
+        },
+        {
+            src: 'assets/images/39d5d4b8-f3eb-4f72-87f6-d4e37425385d.JPG',
+            title: 'Bridal Party Coordination',
+            description: 'Complete bridal party styling and coordination'
+        },
+        {
+            src: 'assets/images/3b88ca2a-eb00-4996-8c52-699f02a033e9.JPG',
+            title: 'Custom Embellishments',
+            description: 'Hand-crafted details and embellishments'
+        },
+        {
+            src: 'assets/images/46b05796-fa8f-4529-a8d4-745f10efb751.JPG',
+            title: 'Luxury Bridal Wear',
+            description: 'Premium fabrics and exquisite craftsmanship'
+        },
+        {
+            src: 'assets/images/5e363ea6-8936-4f22-8966-d6c827cf2c04.JPG',
+            title: 'Modern Elegance',
+            description: 'Contemporary designs with timeless appeal'
+        },
+        {
+            src: 'assets/images/8faa0f07-00d5-4f50-ae8c-955bd169cfaf.JPG',
+            title: 'Ceremonial Attire',
+            description: 'Special occasion and ceremonial wear'
+        },
+        {
+            src: 'assets/images/b060bd07-457a-40a1-b993-1421169cac60.JPG',
+            title: 'Bridal Accessories',
+            description: 'Complementary accessories and styling'
+        },
+        {
+            src: 'assets/images/b9f9496f-13a8-4803-92ba-3bae3f8f539e.JPG',
+            title: 'Wedding Day Perfection',
+            description: 'Complete wedding day look and styling'
+        },
+        {
+            src: 'assets/images/cdf7e426-e0f2-41e8-abf1-ed30d51f6d90.JPG',
+            title: 'Detailed Craftsmanship',
+            description: 'Intricate work and attention to detail'
+        },
+        {
+            src: 'assets/images/cfa6ba1f-ce50-4823-85dd-6ebfcafd9bf1.JPG',
+            title: 'Signature Collection',
+            description: 'Exclusive designs from our signature collection'
+        },
+        {
+            src: 'assets/images/23075e31-ebd0-4350-a8c1-117fa855066d.JPG',
+            title: 'Elegant Bridal Ensemble',
+            description: 'Custom bridal wear with intricate detailing'
+        },
+        {
+            src: 'assets/images/2ef91b04-6292-45ea-ada2-ee318b89be11.JPG',
+            title: 'Groomsmen Coordination',
+            description: 'Stylish groomsmen outfits in coordinated designs'
+        }
+    ];
+    
+    // Create modal HTML with navigation
     const modalHTML = `
         <div id="imageModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <img class="modal-image" id="modalImage" alt="">
+                <button class="modal-nav modal-prev" id="modalPrev">&#8249;</button>
+                <button class="modal-nav modal-next" id="modalNext">&#8250;</button>
+                <div class="modal-image-container">
+                    <img class="modal-image" id="modalImage" alt="">
+                    <div class="modal-info">
+                        <h3 id="modalTitle"></h3>
+                        <p id="modalDescription"></p>
+                    </div>
+                </div>
+                <div class="modal-counter">
+                    <span id="modalCounter"></span>
+                </div>
             </div>
         </div>
     `;
@@ -163,6 +252,8 @@ function initModal() {
     
     const modal = document.getElementById('imageModal');
     const closeBtn = document.querySelector('.close');
+    const prevBtn = document.getElementById('modalPrev');
+    const nextBtn = document.getElementById('modalNext');
     
     // Close modal events
     closeBtn.addEventListener('click', closeModal);
@@ -172,22 +263,70 @@ function initModal() {
         }
     });
     
-    // Close modal with Escape key
+    // Navigation events
+    prevBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showPrevImage();
+    });
+    
+    nextBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showNextImage();
+    });
+    
+    // Keyboard navigation
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
+        if (modal.style.display === 'block') {
+            if (e.key === 'Escape') {
+                closeModal();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevImage();
+            } else if (e.key === 'ArrowRight') {
+                showNextImage();
+            }
         }
     });
 }
 
-function openModal(imageSrc, imageTitle) {
+function openModal(imageIndex) {
+    console.log('openModal called with index:', imageIndex); // Debug log
+    currentImageIndex = imageIndex;
     const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
     
-    modalImage.src = imageSrc;
-    modalImage.alt = imageTitle;
+    if (!modal) {
+        console.error('Modal element not found!');
+        return;
+    }
+    
+    updateModalContent();
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    console.log('Modal should be visible now'); // Debug log
+}
+
+function updateModalContent() {
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalCounter = document.getElementById('modalCounter');
+    
+    const currentImage = galleryImages[currentImageIndex];
+    
+    modalImage.src = currentImage.src;
+    modalImage.alt = currentImage.title;
+    modalTitle.textContent = currentImage.title;
+    modalDescription.textContent = currentImage.description;
+    modalCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+}
+
+function showPrevImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    updateModalContent();
+}
+
+function showNextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    updateModalContent();
 }
 
 function closeModal() {
