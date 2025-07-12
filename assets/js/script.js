@@ -89,16 +89,6 @@ function initGallery() {
             description: 'Contemporary designs with timeless appeal'
         },
         {
-            src: 'assets/images/8faa0f07-00d5-4f50-ae8c-955bd169cfaf.JPG',
-            title: 'Ceremonial Attire',
-            description: 'Special occasion and ceremonial wear'
-        },
-        {
-            src: 'assets/images/b060bd07-457a-40a1-b993-1421169cac60.JPG',
-            title: 'Bridal Accessories',
-            description: 'Complementary accessories and styling'
-        },
-        {
             src: 'assets/images/b9f9496f-13a8-4803-92ba-3bae3f8f539e.JPG',
             title: 'Wedding Day Perfection',
             description: 'Complete wedding day look and styling'
@@ -112,11 +102,6 @@ function initGallery() {
             src: 'assets/images/cfa6ba1f-ce50-4823-85dd-6ebfcafd9bf1.JPG',
             title: 'Signature Collection',
             description: 'Exclusive designs from our signature collection'
-        },
-        {
-            src: 'assets/images/23075e31-ebd0-4350-a8c1-117fa855066d.JPG',
-            title: 'Elegant Bridal Ensemble',
-            description: 'Custom bridal wear with intricate detailing'
         },
         {
             src: 'assets/images/2ef91b04-6292-45ea-ada2-ee318b89be11.JPG',
@@ -231,16 +216,6 @@ function initModal() {
             description: 'Contemporary designs with timeless appeal'
         },
         {
-            src: 'assets/images/8faa0f07-00d5-4f50-ae8c-955bd169cfaf.JPG',
-            title: 'Ceremonial Attire',
-            description: 'Special occasion and ceremonial wear'
-        },
-        {
-            src: 'assets/images/b060bd07-457a-40a1-b993-1421169cac60.JPG',
-            title: 'Bridal Accessories',
-            description: 'Complementary accessories and styling'
-        },
-        {
             src: 'assets/images/b9f9496f-13a8-4803-92ba-3bae3f8f539e.JPG',
             title: 'Wedding Day Perfection',
             description: 'Complete wedding day look and styling'
@@ -254,11 +229,6 @@ function initModal() {
             src: 'assets/images/cfa6ba1f-ce50-4823-85dd-6ebfcafd9bf1.JPG',
             title: 'Signature Collection',
             description: 'Exclusive designs from our signature collection'
-        },
-        {
-            src: 'assets/images/23075e31-ebd0-4350-a8c1-117fa855066d.JPG',
-            title: 'Elegant Bridal Ensemble',
-            description: 'Custom bridal wear with intricate detailing'
         },
         {
             src: 'assets/images/2ef91b04-6292-45ea-ada2-ee318b89be11.JPG',

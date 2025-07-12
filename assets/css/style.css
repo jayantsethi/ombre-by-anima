@@ -481,46 +481,50 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Contact Section */
 .contact {
-    padding: 100px 0;
+    padding: 120px 0;
     background: linear-gradient(135deg, #faf8f5 0%, #f5f1eb 100%);
 }
 
 .contact-content {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
 }
 
 .contact-info h3 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #2c2c2c;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .contact-info p {
     color: #666;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .contact-methods {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
-    margin-top: 3rem;
+    margin-top: 4rem;
 }
 
 .contact-method h4 {
     color: #333;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
 }
 
 .contact-method p {
     color: #666;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    font-size: 1.05rem;
 }
 
 .instagram-btn {
@@ -554,6 +558,47 @@ h1, h2, h3, h4, h5, h6 {
 
 .social-link:hover, .contact-link:hover {
     color: #666;
+}
+
+.contact-details {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.contact-detail {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border-left: 3px solid #333;
+}
+
+.contact-detail strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.contact-detail a {
+    color: #2c2c2c;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-detail a:hover {
+    color: #666;
+}
+
+.phone-number {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333 !important;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.phone-number:hover {
+    color: #000 !important;
+    text-decoration: underline;
 }
 
 /* Form Styles */
