@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initModal(); // Initialize modal first
     initGallery();
+    initCollectionCarousel();
     initContactForm();
     initScrollEffects();
 });
@@ -142,7 +143,8 @@ function initGallery() {
         galleryItem.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Gallery item clicked, index:', index); // Debug log
-            openModal(index);
+            // Collection images are first 7, so gallery images start at index 7
+            openModal(index + 7);
         });
         
         // Also add click event to the image itself
@@ -151,7 +153,8 @@ function initGallery() {
             e.preventDefault();
             e.stopPropagation();
             console.log('Image clicked directly, index:', index); // Debug log
-            openModal(index);
+            // Collection images are first 7, so gallery images start at index 7
+            openModal(index + 7);
         });
         
         galleryGrid.appendChild(galleryItem);
@@ -165,6 +168,43 @@ let galleryImages = [];
 function initModal() {
     // Store gallery images for modal navigation
     galleryImages = [
+        // Collection images (first 7)
+        {
+            src: 'assets/images/collection-1.jpg',
+            title: 'Collection Piece 1',
+            description: 'Exquisite bridal wear from our signature collection'
+        },
+        {
+            src: 'assets/images/collection-2.jpg',
+            title: 'Collection Piece 2',
+            description: 'Timeless elegance in every detail'
+        },
+        {
+            src: 'assets/images/collection-3.jpg',
+            title: 'Collection Piece 3',
+            description: 'Modern sophistication meets traditional beauty'
+        },
+        {
+            src: 'assets/images/collection-4.jpg',
+            title: 'Collection Piece 4',
+            description: 'Handcrafted perfection for your special day'
+        },
+        {
+            src: 'assets/images/collection-5.jpg',
+            title: 'Collection Piece 5',
+            description: 'Bespoke designs that tell your unique story'
+        },
+        {
+            src: 'assets/images/collection-6.jpg',
+            title: 'Collection Piece 6',
+            description: 'Artistry and craftsmanship in every stitch'
+        },
+        {
+            src: 'assets/images/collection-7.jpg',
+            title: 'Collection Piece 7',
+            description: 'Creating memories with every design'
+        },
+        // Client stories images (remaining)
         {
             src: 'assets/images/38530ac6-9a8a-44a1-9c65-d1fd4198c7c8.JPG',
             title: 'Indian American Fusion',
@@ -538,3 +578,125 @@ function initLazyLoading() {
 
 // Initialize lazy loading
 document.addEventListener('DOMContentLoaded', initLazyLoading);
+
+// Collection Carousel functionality
+function initCollectionCarousel() {
+    const track = document.getElementById('collectionTrack');
+    const prevBtn = document.getElementById('collectionPrev');
+    const nextBtn = document.getElementById('collectionNext');
+    const dotsContainer = document.getElementById('collectionDots');
+    
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) {
+        return; // Exit if elements don't exist
+    }
+    
+    const slides = track.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+    
+    // Create dots
+    slides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot';
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+    });
+    
+    const dots = dotsContainer.querySelectorAll('.carousel-dot');
+    
+    // Update carousel position
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // Update dots
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+    
+    // Go to specific slide
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+    }
+    
+    // Next slide
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarousel();
+    }
+    
+    // Previous slide
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+    
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    
+    // Add click events to carousel images to open modal
+    slides.forEach((slide, index) => {
+        const img = slide.querySelector('img');
+        img.addEventListener('click', function() {
+            // Open modal with the corresponding collection image (first 7 images in modal)
+            openModal(index);
+        });
+        img.style.cursor = 'pointer';
+    });
+    
+    // Auto-play (optional)
+    let autoPlayInterval;
+    
+    function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+    
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+    
+    // Start auto-play
+    startAutoPlay();
+    
+    // Pause auto-play on hover
+    track.addEventListener('mouseenter', stopAutoPlay);
+    track.addEventListener('mouseleave', startAutoPlay);
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+        }
+    });
+    
+    // Touch/swipe support for mobile
+    let startX = 0;
+    let endX = 0;
+    
+    track.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+    });
+    
+    track.addEventListener('touchend', function(e) {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                nextSlide(); // Swipe left
+            } else {
+                prevSlide(); // Swipe right
+            }
+        }
+    }
+}
