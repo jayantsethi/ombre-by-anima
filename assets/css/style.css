@@ -172,8 +172,8 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     position: relative;
-    background-image: url('../images/5e363ea6-8936-4f22-8966-d6c827cf2c04.JPG');
-    background-size: cover;
+    background-image: url('../images/full-logo.JPG');
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -210,19 +210,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-subtitle {
-    font-size: 1.3rem;
-    color: #666;
+    font-size: 1.5rem;
+    color: black;
     margin-bottom: 1rem;
-    font-weight: 400;
+    font-weight: 800;
     font-style: italic;
 }
 
 .hero-description {
     font-size: 1.1rem;
-    color: #666;
+    color: black;
     margin-bottom: 2rem;
     line-height: 1.7;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .hero-buttons {
